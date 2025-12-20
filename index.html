@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - راحیل</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:sans-serif;
+    background: linear-gradient(135deg,#667eea,#764ba2,#ff758c);
+}
+
+#card{
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    padding: 40px 30px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+#name{
+    font-size: 48px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.3s, text-shadow 0.3s;
+}
+
+#name:hover{
+    transform: scale(1.1);
+    text-shadow: 0 0 20px #fff;
+}
+
+#text{
+    font-size: 18px;
+    color: #f1f1f1;
+}
+</style>
+</head>
+
+<body>
+
+<div id="card">
+    <div id="name" onclick="openNext()">راحیل</div>
+    <div id="text">یہ صرف راحیل کے لیے</div>
+</div>
+
+<script>
+function openNext(){
+    window.location.href = "home.html";
+}
+</script>
+
+</body>
+  </html>
