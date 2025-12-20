@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - راحیل</title>
+<title>Raheel Welcome</title>
 
 <style>
 body{
@@ -12,29 +12,108 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    font-family:sans-serif;
-    background: linear-gradient(135deg,#667eea,#764ba2,#ff758c);
+    font-family: "Segoe UI","Noto Nastaliq Urdu",serif;
+    background: radial-gradient(circle at top,#ffe8f0,#cdb4db,#bde0fe);
 }
 
-#card{
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(12px);
-    padding: 40px 30px;
-    border-radius: 25px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+/* ===== FRAME ===== */
+#frame{
+    width:94%;
+    height:94%;
+    border-radius:30px;
+    background: linear-gradient(135deg,#1f254a,#2f2c6f,#3a1c58);
+    box-shadow:0 30px 70px rgba(0,0,0,0.6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
 }
 
+/* ===== FLOWER BORDER ===== */
+#frame::before{
+    content:"";
+    position:absolute;
+    inset:25px;
+    border-radius:22px;
+    border:2px dashed rgba(255,255,255,0.35);
+    pointer-events:none;
+}
+
+/* ===== CENTER ===== */
+#center{
+    text-align:center;
+    color:#fff;
+}
+
+/* ===== NAME AREA ===== */
+#clickArea{
+    display:inline-block;
+    padding:20px 30px;
+    border-radius:20px;
+    background: rgba(0,0,0,0.35);
+    box-shadow:0 0 35px rgba(255,255,255,0.6);
+    cursor:pointer;
+}
+
+/* ===== NAME ===== */
 #name{
-    font-size: 48px;
-    font-weight: bold;
-    color: #fff;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: transform 0.3s, text-shadow 0.3s;
+    font-size:60px;
+    font-weight:900;
+    letter-spacing:4px;
 }
 
-#name:hover{
+#name span{color:#fff;}
+#name span:nth-child(1){color:#ffd6a5;}
+#name span:nth-child(2){color:#fdffb6;}
+#name span:nth-child(3){color:#caffbf;}
+#name span:nth-child(4){color:#9bf6ff;}
+#name span:nth-child(5){color:#d0bfff;}
+
+/* ===== INDICATOR LINE ===== */
+#line{
+    margin:12px auto 6px;
+    width:160px;
+    height:4px;
+    background:#ffffff;
+    border-radius:10px;
+}
+
+/* ===== TEXT ===== */
+#hint{
+    font-size:18px;
+    margin-top:6px;
+    color:#ffffff;
+    letter-spacing:2px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="frame">
+    <div id="center">
+
+        <!-- CLICK AREA -->
+        <div id="clickArea" onclick="goNext()">
+            <div id="name">
+                <span>ر</span><span>ا</span><span>ح</span><span>ی</span><span>ل</span>
+            </div>
+
+            <div id="line"></div>
+            <div id="hint">⬆ یہی نام کلک کریں ⬆</div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function goNext(){
+    window.location.href = "home.html";
+}
+</script>
+
+</body>
+</html>#name:hover{
     transform: scale(1.1);
     text-shadow: 0 0 20px #fff;
 }
