@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Racing</title>
+
+<style>
+body{
+    margin:0;
+    background: radial-gradient(circle at top,#0f2027,#000);
+    overflow:hidden;
+    font-family: Arial, sans-serif;
+}
+canvas{
+    display:block;
+    margin:auto;
+}
+#ui{
+    position:fixed;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#0ff;
+    font-size:18px;
+    text-shadow:0 0 10px #0ff;
+}
+#gameOver{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    color:#fff;
+}
+#gameOver h1{
+    color:#ff00ff;
+    text-shadow:0 0 20px #ff00ff;
+}
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:25px;
+    font-size:18px;
+    background:linear-gradient(45deg,#00f,#0ff);
+    color:#000;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="game"></canvas>
+
+<div id="ui">
+    Score: <span id="score">0</span> |
+    Level: <span id="level">1</span>
+</div>
+
+<div id="gameOver">
+    <h1>Game Over</h1>
+    <p>Your Skill Was Tested 😈</p>
+    <button onclick="restart()">Play Again</button>
+</div>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let roadWidth = 260;
+let car = {x: canvas.width/2, y: canvas.height-120, w:40, h:70};
+let obstacles = [];
+let speed = 6;
+let score = 0;
+let level = 1;
+let running = true;
+
+function drawRoad(){
+    ctx.fillStyle="#000";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    let roadX = canvas.width/2 - roadWidth/2;
+    ctx.strokeStyle="#0ff";
+    ctx.lineWidth=4;
+    ctx.shadowColor="#0ff";
+    ctx.shadowBlur=20;
+
+    ctx.strokeRect(roadX,0,roadWidth,canvas.height);
+}
+
+function drawCar(){
+    ctx.fillStyle="#ff00ff";
+    ctx.shadowColor="#ff00ff";
+    ctx.shadowBlur=20;
+    ctx.fillRect(car.x-car.w/2,car.y,car.w,car.h);
+}
+
+function spawnObstacle(){
+    let roadX = canvas.width/2 - roadWidth/2;
+    let x = roadX + Math.random()*(roadWidth-40);
+    obstacles.push({x:x,y:-80,w:40,h:80});
+}
+
+function drawObstacles(){
+    ctx.fillStyle="#ff4444";
+    ctx.shadowColor="#ff4444";
+    ctx.shadowBlur=15;
+
+    obstacles.forEach(o=>{
+        o.y += speed;
+        ctx.fillRect(o.x,o.y,o.w,o.h);
+    });
+
+    obstacles = obstacles.filter(o=>o.y < canvas.height+100);
+}
+
+function checkCollision(){
+    for(let o of obstacles){
+        if(car.x-car.w/2 < o.x+o.w &&
+           car.x+car.w/2 > o.x &&
+           car.y < o.y+o.h &&
+           car.y+car.h > o.y){
+            endGame();
+        }
+    }
+}
+
+function endGame(){
+    running=false;
+    document.getElementById("gameOver").style.display="flex";
+}
+
+function update(){
+    if(!running) return;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    drawRoad();
+    drawCar();
+    drawObstacles();
+    checkCollision();
+
+    score++;
+    document.getElementById("score").innerText = score;
+
+    if(score % 500 === 0){
+        level++;
+        speed += 1;
+        document.getElementById("level").innerText = level;
+    }
+
+    if(Math.random()<0.03){
+        spawnObstacle();
+    }
+
+    requestAnimationFrame(update);
+}
+update();
+
+// controls
+window.addEventListener("keydown",e=>{
+    if(e.key==="ArrowLeft") car.x -= 30;
+    if(e.key==="ArrowRight") car.x += 30;
+});
+
+// mobile touch
+canvas.addEventListener("touchmove",e=>{
+    car.x = e.touches[0].clientX;
+});
+
+function restart(){
+    obstacles=[];
+    speed=6;
+    score=0;
+    level=1;
+    running=true;
+    document.getElementById("gameOver").style.display="none";
+    update();
+}
+</script>
+
+</body>
+  </html>
