@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFG Coin - Withdrawals</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh;background:
+radial-gradient(circle at 50% 0%,rgba(214,176,67,.12),transparent 35%),
+#000}
+.header{
+  height:86px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;border-bottom:1px solid rgba(224,190,93,.35);
+  background:#050505;position:sticky;top:0;z-index:5
+}
+.logo{display:flex;align-items:center;gap:12px}
+.coin{
+  width:54px;height:54px;border-radius:50%;
+  border:3px solid #d9b85a;
+  display:flex;align-items:center;justify-content:center;
+  color:#f2d47b;font-weight:900;font-size:17px;
+  box-shadow:0 0 18px rgba(218,181,77,.35)
+}
+.brand{font-size:30px;font-weight:900;color:#e1c15f}
+.menu{color:#e1c15f;font-size:17px;font-weight:800}
+.menu-icon{font-size:30px;margin-left:7px;vertical-align:-3px}
+
+.wrap{max-width:850px;margin:auto;padding:28px 16px 55px}
+.title{text-align:center;margin:5px 0 25px}
+.title h1{margin:0;color:#e4c364;font-size:30px}
+.title p{margin:8px 0 0;color:#aaa;font-size:14px}
+
+.summary{
+ display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:22px
+}
+.card{
+ background:linear-gradient(145deg,#111,#050505);
+ border:1px solid rgba(224,190,93,.38);
+ border-radius:18px;padding:22px 18px;
+ box-shadow:0 8px 28px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.04)
+}
+.card .label{font-size:14px;color:#ddd;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.big{font-size:32px;font-weight:900;color:#e4c364;margin-top:9px}
+.pending{color:#f0c95d}.complete{color:#fff}
+
+.section-title{
+ font-size:20px;font-weight:900;color:#e4c364;margin:28px 0 12px;
+ border-left:4px solid #d8b45b;padding-left:10px
+}
+.day{
+ background:#080808;border:1px solid rgba(224,190,93,.30);
+ border-radius:18px;margin:12px 0;padding:18px
+}
+.day-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.date{font-size:21px;font-weight:900;color:#fff}
+.total{font-size:16px;font-weight:800;color:#e4c364;text-align:right}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.stat{
+ background:#111;border-radius:12px;padding:14px;text-align:center;
+ border:1px solid rgba(255,255,255,.07)
+}
+.stat span{display:block;font-size:12px;color:#999;text-transform:uppercase}
+.stat b{display:block;font-size:23px;margin-top:5px}
+.stat.complete b{color:#fff}
+.stat.pending b{color:#e4c364}
+
+.footer{text-align:center;color:#666;font-size:12px;margin-top:28px}
+
+@media(max-width:520px){
+ .brand{font-size:25px}.coin{width:48px;height:48px;font-size:15px}
+ .summary{grid-template-columns:1fr 1fr}
+ .big{font-size:25px}.card{padding:18px 12px}
+ .date{font-size:18px}.total{font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="coin">AFG</div>
+    <div class="brand">AFGCoin</div>
+  </div>
+  <div class="menu">Menu <span class="menu-icon">☰</span></div>
+</header>
+
+<main class="wrap">
+  <div class="title">
+    <h1>Withdrawal Status</h1>
+    <p>Transparent withdrawal overview</p>
+  </div>
+
+  <!-- MAIN TOTALS -->
+  <section class="summary">
+    <div class="card">
+      <div class="label">Total Withdrawal</div>
+      <div class="big" id="totalWithdrawal">10,000</div>
+    </div>
+    <div class="card">
+      <div class="label">Total Withdrawal Pending</div>
+      <div class="big pending" id="totalPending">1,000</div>
+    </div>
+  </section>
+
+  <div class="section-title">Daily Withdrawal Details</div>
+  <section id="dailyList"></section>
+
+  <div class="footer">AFGCoin • Withdrawal Information</div>
+</main>
+
+<script>
+/*
+  ==============================
+  EDITABLE WITHDRAWAL DATA
+  ==============================
+  Website owner can change these numbers.
+  "total" = total withdrawals received that day
+  "complete" = completed withdrawals
+  "pending" = pending withdrawals
+*/
+const withdrawalData = [
+  {
+    date: "24th September",
+    total: 10000,
+    complete: 9000,
+    pending: 1000
+  },
+  {
+    date: "25th September",
+    total: 5000,
+    complete: 4500,
+    pending: 500
+  }
+];
+
+/* Main totals shown at the top */
+const mainTotals = {
+  totalWithdrawal: 10000,
+  totalPending: 1000
+};
+
+document.getElementById("totalWithdrawal").textContent =
+  mainTotals.totalWithdrawal.toLocaleString();
+
+document.getElementById("totalPending").textContent =
+  mainTotals.totalPending.toLocaleString();
+
+const list = document.getElementById("dailyList");
+
+withdrawalData.forEach(day => {
+  const item = document.createElement("div");
+  item.className = "day";
+  item.innerHTML = `
+    <div class="day-head">
+      <div class="date">${day.date} Withdrawal</div>
+      <div class="total">Total ${day.total.toLocaleString()}</div>
+    </div>
+    <div class="stats">
+      <div class="stat complete">
+        <span>Complete Withdrawal</span>
+        <b>${day.complete.toLocaleString()}</b>
+      </div>
+      <div class="stat pending">
+        <span>Pending Withdrawal</span>
+        <b>${day.pending.toLocaleString()}</b>
+      </div>
+    </div>
+  `;
+  list.appendChild(item);
+});
+</script>
+
+</body>
+</html>
